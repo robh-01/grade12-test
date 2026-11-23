@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 12 Database Test</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: #f4f4f4;
+      color: #222;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+    .paper {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 32px 36px;
+      border: 1px solid #ddd;
+    }
+    header {
+      text-align: center;
+      border-bottom: 2px solid #222;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    h1 { margin: 0 0 4px; font-size: 1.6rem; }
+    .subject { margin: 0; font-size: 1.1rem; }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+    .note { font-style: italic; margin: 0 0 20px; }
+    ol { padding-left: 1.4rem; margin: 0; }
+    li { margin-bottom: 18px; }
+    .q { display: flex; justify-content: space-between; gap: 16px; }
+    .q span:first-child { min-width: 0; }
+    .marks { white-space: nowrap; font-weight: bold; }
+    .timer-bar {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-family: system-ui, sans-serif;
+    }
+    #clock { font-size: 1.3rem; font-variant-numeric: tabular-nums; font-weight: bold; }
+    #clock.done { color: #c00; }
+    button {
+      font: inherit;
+      padding: 6px 14px;
+      border: 1px solid #222;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover { background: #222; color: #fff; }
+    footer { text-align: center; margin-top: 28px; font-weight: bold; }
+
+    @media (max-width: 520px) {
+      .paper { padding: 20px 16px; }
+      .meta { flex-direction: column; align-items: center; }
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .paper { border: none; padding: 0; max-width: none; }
+      .timer-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="timer-bar">
+    <span id="clock">36:00</span>
+    <button id="startBtn" type="button">Start timer</button>
+    <button type="button" onclick="window.print()">Print</button>
+  </div>
+
+  <main class="paper">
+    <header>
+      <h1>Class Test</h1>
+      <p class="subject">Grade 12 &middot; Computer Science &middot; Database Management System</p>
+      <div class="meta">
+        <span>Time: 36 minutes</span>
+        <span>Full Marks: 15</span>
+      </div>
+    </header>
+
+    <p class="note">Attempt all questions. Figures in the right margin indicate full marks.</p>
+
+    <ol>
+      <li>
+        <div class="q">
+          <span>Define: database, DBMS, and normalization.</span>
+          <span class="marks">[3]</span>
+        </div>
+      </li>
+      <li>
+        <div class="q">
+          <span>Differentiate between a centralized database system and a distributed database system.</span>
+          <span class="marks">[5]</span>
+        </div>
+      </li>
+      <li>
+        <div class="q">
+          <span>Explain 1NF, 2NF, and 3NF.</span>
+          <span class="marks">[5]</span>
+        </div>
+      </li>
+      <li>
+        <div class="q">
+          <span>List two commands each of DDL and DML.</span>
+          <span class="marks">[2]</span>
+        </div>
+      </li>
+    </ol>
+
+    <footer>&mdash; Best of Luck &mdash;</footer>
+  </main>
+
+  <script>
+    (function () {
+      var total = 36 * 60;
+      var left = total;
+      var id = null;
+      var clock = document.getElementById('clock');
+      var btn = document.getElementById('startBtn');
+
+      function show() {
+        var m = Math.floor(left / 60);
+        var s = left % 60;
+        clock.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      }
+
+      btn.addEventListener('click', function () {
+        if (id) {
+          clearInterval(id);
+          id = null;
+          btn.textContent = 'Resume';
+          return;
+        }
+        if (left === 0) { left = total; clock.classList.remove('done'); show(); }
+        btn.textContent = 'Pause';
+        id = setInterval(function () {
+          left--;
+          show();
+          if (left <= 0) {
+            clearInterval(id);
+            id = null;
+            clock.textContent = "Time's up";
+            clock.classList.add('done');
+            btn.textContent = 'Restart';
+          }
+        }, 1000);
+      });
+    })();
+  </script>
+</body>
+</html>
